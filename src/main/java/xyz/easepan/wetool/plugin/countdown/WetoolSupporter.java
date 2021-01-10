@@ -99,25 +99,30 @@ public class WetoolSupporter implements WePluginSupporter {
             return;
         }
 
-        countdownBox = new ComboBox<>();
-        countdownBox.setPrefWidth(150);
-        HBox.setHgrow(countdownBox, Priority.NEVER);
-        countdownBox.getItems().addAll(dateMap.keySet());
-        countdownBox.getSelectionModel().selectFirst();
+        Platform.runLater(() -> {
+            countdownBox = new ComboBox<>();
+            countdownBox.setPrefWidth(150);
+            HBox.setHgrow(countdownBox, Priority.NEVER);
+            countdownBox.getItems().addAll(dateMap.keySet());
+            countdownBox.getSelectionModel().selectFirst();
 
-        label = new Label();
-        label.setText("倒计时");
-        HBox.setHgrow(label, Priority.NEVER);
-        HBox.setMargin(label, new Insets(4, 0, 0, 10));
+            label = new Label();
+            label.setText("倒计时");
+            HBox.setHgrow(label, Priority.NEVER);
+            HBox.setMargin(label, new Insets(4, 0, 0, 10));
 
-        initialized = true;
-        HBox titleBar = BeanFactory.get(AppConsts.BeanKey.TITLE_BAR);
-        titleBar.getChildren().add(countdownBox);
-        titleBar.getChildren().add(label);
+            initialized = true;
+            HBox titleBar = BeanFactory.get(AppConsts.BeanKey.TITLE_BAR);
+            titleBar.getChildren().add(countdownBox);
+            titleBar.getChildren().add(label);
+        });
 
         EventCenter.subscribeEvent(EventCenter.EVENT_SECONDS_TIMER, new BaseNoMessageEventHandler() {
             @Override
             public void handleEvent0(String s, Date date) {
+                if (Objects.isNull(countdownBox) || Objects.isNull(label)) {
+                    return;
+                }
                 Stage stage = FxUtils.getStage();
                 if (!stage.isShowing() || !stage.isFocused()) {
                     return;
