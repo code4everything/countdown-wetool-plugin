@@ -17,8 +17,8 @@ public class CountdownTest {
         WeConfig config = WetoolTester.getConfig();
         config.setDisableKeyboardMouseListener(true);
         JSONObject configJson = JSON.parseObject(JSON.toJSONString(config));
-        configJson.put("countdownDates", Map.of("倒计时", "2021-12-31", "春节", "2021-02-11"));
+        configJson.put("countdownDates", Map.of());
         config.setConfigJson(configJson);
-        WetoolTester.runTest(config, args);
+        WetoolTester.runTest(args);
     }
 }
