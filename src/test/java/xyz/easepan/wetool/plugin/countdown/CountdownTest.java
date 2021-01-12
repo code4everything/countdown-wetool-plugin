@@ -14,11 +14,12 @@ import java.util.Map;
 public class CountdownTest {
 
     public static void main(String[] args) {
-        WeConfig config = WetoolTester.getConfig();
-        config.setDisableKeyboardMouseListener(true);
-        JSONObject configJson = JSON.parseObject(JSON.toJSONString(config));
-        configJson.put("countdownDates", Map.of());
-        config.setConfigJson(configJson);
-        WetoolTester.runTest(args);
+                WeConfig config = WetoolTester.getConfig();
+                config.setDisableKeyboardMouseListener(true);
+                JSONObject configJson = JSON.parseObject(JSON.toJSONString(config));
+                configJson.put("countdownDates", Map.of());
+                config.setConfigJson(configJson);
+                WetoolTester.runTest(args);
+//        System.out.println(new WetoolSupporter().parseDate("{end-week+1:yyyy-MM-dd HH:mm:ss}"));
     }
 }
