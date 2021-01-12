@@ -1,5 +1,6 @@
 package xyz.easepan.wetool.plugin.countdown;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
@@ -40,14 +41,15 @@ public class WetoolSupporter implements WePluginSupporter {
 
     private Label label;
 
-    private ComboBox<String> countdownBox;
+    private ComboBox<String> countdownBox = null;
 
-    private Map<String, Date> dateMap;
+    private Map<String, String> dateMap;
 
     private boolean initialized = false;
 
     @Override
     public boolean initialize() {
+        countdownBox = new ComboBox<>();
         registerAction();
         Object countdownDates = WeUtils.getConfig().getConfig("countdownDates");
         if (Objects.isNull(countdownDates)) {
@@ -76,12 +78,7 @@ public class WetoolSupporter implements WePluginSupporter {
                 dateMap = new HashMap<>(8);
             }
 
-            try {
-                dateMap.put(tokens[0], DateUtil.parse(tokens[1]));
-            } catch (Exception e) {
-                FxDialogs.showError("时间格式不正确");
-                return;
-            }
+                    dateMap.put(tokens[0], tokens[1]);
 
             countdown();
             countdownBox.getItems().clear();
@@ -100,7 +97,6 @@ public class WetoolSupporter implements WePluginSupporter {
         }
 
         Platform.runLater(() -> {
-            countdownBox = new ComboBox<>();
             countdownBox.setPrefWidth(150);
             HBox.setHgrow(countdownBox, Priority.NEVER);
             countdownBox.getItems().addAll(dateMap.keySet());
@@ -128,13 +124,11 @@ public class WetoolSupporter implements WePluginSupporter {
                     return;
                 }
 
-                Date cd = dateMap.get(countdownBox.getValue());
-                if (Objects.isNull(cd)) {
-                    return;
-                }
-
                 Platform.runLater(() -> {
-                    if (cd.before(date)) {
+                    Date cd = parseDate(dateMap.get(countdownBox.getValue()));
+                    if (Objects.isNull(cd)) {
+                        label.setText("日期格式不合法");
+                    } else if (cd.before(date)) {
                         label.setText("倒计时已过期");
                     } else {
                         String template = "{}天{}时{}分{}秒";
@@ -151,5 +145,31 @@ public class WetoolSupporter implements WePluginSupporter {
                 });
             }
         });
+    }
+
+    public Date parseDate(String dateVariable) {
+        if (StrUtil.isBlank(dateVariable)) {
+            return null;
+        }
+
+        try {
+            return DateUtil.parse(dateVariable);
+        } catch (Exception e) {
+            // ignore
+        }
+
+        return null;
+    }
+
+    private Date parse(String variable) {
+        DateTime now = DateUtil.date();
+        switch (variable) {
+            case "today":
+                return now;
+            case "tomorrow":
+                return DateUtil.offsetDay(now, 1);
+            default:
+                return null;
+        }
     }
 }
