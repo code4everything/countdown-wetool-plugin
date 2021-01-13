@@ -9,6 +9,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.parser.Feature;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
@@ -29,7 +30,7 @@ import org.code4everything.wetool.plugin.support.util.FxUtils;
 import org.code4everything.wetool.plugin.support.util.WeUtils;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,7 +65,7 @@ public class WetoolSupporter implements WePluginSupporter {
             textArea.setPrefHeight(600);
 
             if (Objects.isNull(dateMap)) {
-                dateMap = new HashMap<>(16);
+                dateMap = new LinkedHashMap<>();
             }
             dateMap.forEach((k, v) -> {
                 textArea.appendText(k);
@@ -100,7 +101,7 @@ public class WetoolSupporter implements WePluginSupporter {
             return true;
         }
 
-        dateMap = JSON.parseObject(JSON.toJSONString(countdownDates), new TypeReference<>() {});
+        dateMap = JSON.parseObject(JSON.toJSONString(countdownDates), new TypeReference<>() {}, Feature.OrderedField);
         countdown();
         return true;
     }
@@ -119,7 +120,7 @@ public class WetoolSupporter implements WePluginSupporter {
             }
 
             if (Objects.isNull(dateMap)) {
-                dateMap = new HashMap<>(8);
+                dateMap = new LinkedHashMap<>();
             }
 
             dateMap.put(tokens[0], tokens[1]);
