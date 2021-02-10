@@ -154,8 +154,10 @@ public class WetoolSupporter implements WePluginSupporter {
 
         initialized = true;
         HBox titleBar = BeanFactory.get(AppConsts.BeanKey.TITLE_BAR);
-        titleBar.getChildren().add(countdownBox);
-        titleBar.getChildren().add(label);
+        Platform.runLater(() -> {
+            titleBar.getChildren().add(countdownBox);
+            titleBar.getChildren().add(label);
+        });
 
         EventCenter.subscribeEvent(EventCenter.EVENT_SECONDS_TIMER, new BaseNoMessageEventHandler() {
             @Override
