@@ -12,3 +12,7 @@
     }
 }
 ```
+
+支持动态时间，格式：{variable:format}，变量支持：today, now, tomorrow, end-week, end-month, end-year，格式化如：yyyy-MM-dd, HH:mm:ss等
+
+举例，默认格式化：yyyy-MM-dd，年度倒计时：`{end-year} 23:59:59` 或者 `{end-year:yyyy-MM-dd} 23:59:59` 或者 `{end-year:yyyy-MM-dd HH:mm:ss.SSS}`
