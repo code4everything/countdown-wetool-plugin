@@ -6,14 +6,14 @@
 
     <groupId>xyz.easepan</groupId>
     <artifactId>countdown-wetool-plugin</artifactId>
-    <version>1.3.0</version>
+    <version>${wetool.version}</version>
 
     <properties>
         <java.veresion>11</java.veresion>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <wetool.version>1.3.0</wetool.version>
+        <wetool.version>1.5.0</wetool.version>
         <junit.version>4.13.1</junit.version>
         <lombok.version>1.18.16</lombok.version>
     </properties>
